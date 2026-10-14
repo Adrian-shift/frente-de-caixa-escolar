@@ -1,13 +1,27 @@
 package br.edu.ifba.cantinapdv.controller;
 
+import br.edu.ifba.cantinapdv.dao.ProdutoDAO;
+import br.edu.ifba.cantinapdv.dao.VendaDAO;
+import br.edu.ifba.cantinapdv.model.Produto;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CaixaController {
 
+    // Botões de forma de pagamento
     @FXML
     private Button btnDinheiro;
     @FXML
@@ -17,14 +31,13 @@ public class CaixaController {
     @FXML
     private Button btnFinalizar;
 
-    // Variável para guardar a forma de pagamento escolhida (Padrão: Dinheiro)
-    private String formaPagamento = "Dinheiro";
+    // Botão do menu lateral que abre a tela de produtos
+    @FXML
+    private Button btnGerenciarProdutos;
 
-    // Fazendo o link com os botões e campos do Scene Builder / FXML
+    // Painel onde os botões dos produtos são criados
     @FXML
-    private Button btnFicha3;
-    @FXML
-    private Button btnFicha5;
+    private FlowPane painelProdutos;
 
     @FXML
     private ListView<String> listaCarrinho;
@@ -37,94 +50,126 @@ public class CaixaController {
     @FXML
     private TextField campoTroco;
 
-    // Variável para guardar a soma dos itens
+    // Forma de pagamento escolhida (padrão: Dinheiro)
+    private String formaPagamento = "Dinheiro";
+
+    // Soma dos itens
     private double totalCompra = 0.0;
 
-    // O método initialize roda automaticamente assim que a tela abre
+    // Guarda os produtos do carrinho (vamos usar na Etapa 5)
+    private final List<Produto> itensCarrinho = new ArrayList<>();
+
+    // Roda automaticamente quando a tela abre
     @FXML
     public void initialize() {
-        // Configurando a ação do botão da Ficha de R$ 5,00
-        btnFicha5.setOnAction(event -> adicionarItemAoCarrinho("Ficha R$ 5,00", 5.00));
-
-        // Configurando a ação do botão da Ficha de R$ 3,00
-        btnFicha3.setOnAction(event -> adicionarItemAoCarrinho("Ficha R$ 3,00", 3.00));
+        carregarProdutos();
 
         campoValorRecebido.textProperty().addListener((observador, valorAntigo, valorNovo) -> {
             calcularTroco();
         });
 
-        // Configurar a escolha do método de pagamento
         btnDinheiro.setOnAction(e -> formaPagamento = "Dinheiro");
         btnCartao.setOnAction(e -> formaPagamento = "Cartão");
         btnPix.setOnAction(e -> formaPagamento = "PIX");
 
-        // Ação do botão Finalizar Venda
         btnFinalizar.setOnAction(e -> finalizarVenda());
+
+        btnGerenciarProdutos.setOnAction(e -> abrirGerenciarProdutos());
     }
 
-    // Método que calcula o troco automaticamente
+    // Abre a janela de gerenciar produtos e, quando ela fechar, atualiza os botões
+    private void abrirGerenciarProdutos() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/edu/ifba/cantinapdv/ProdutosView.fxml"));
+            Scene cena = new Scene(loader.load());
+
+            Stage janela = new Stage();
+            janela.setTitle("Gerenciar Produtos");
+            janela.initModality(Modality.APPLICATION_MODAL); // bloqueia a tela de vendas enquanto aberta
+            janela.setScene(cena);
+            janela.showAndWait(); // espera a janela fechar
+
+            carregarProdutos(); // atualiza os botões de venda
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    // Lê os produtos ativos do banco e cria um botão para cada um
+    private void carregarProdutos() {
+        painelProdutos.getChildren().clear();
+
+        for (Produto produto : ProdutoDAO.listarAtivos()) {
+            Button botao = new Button(textoDoBotao(produto));
+            botao.setPrefSize(140, 90);
+            botao.setWrapText(true);
+            botao.setTextAlignment(TextAlignment.CENTER);
+            botao.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+            botao.setOnAction(e -> adicionarItemAoCarrinho(produto));
+
+            painelProdutos.getChildren().add(botao);
+        }
+    }
+
+    // Fichas já têm o valor no nome; os outros mostram o preço embaixo
+    private String textoDoBotao(Produto produto) {
+        if (produto.getCategoria().equals("Ficha")) {
+            return produto.getNome();
+        }
+        return produto.getNome() + "\nR$ " + String.format("%.2f", produto.getPreco());
+    }
+
+    private void adicionarItemAoCarrinho(Produto produto) {
+        listaCarrinho.getItems().add(produto.getNome() + " - R$ " + String.format("%.2f", produto.getPreco()));
+        itensCarrinho.add(produto);
+
+        totalCompra = totalCompra + produto.getPreco();
+        labelTotal.setText(String.format("R$ %.2f", totalCompra));
+
+        calcularTroco();
+    }
+
     private void calcularTroco() {
         try {
-            // Pega o texto que a atendente digitou e troca vírgula por ponto (para o Java entender a matemática)
             String textoRecebido = campoValorRecebido.getText().replace(",", ".");
 
-            // Se o campo estiver vazio, zera o troco
             if (textoRecebido.isEmpty()) {
                 campoTroco.setText("0,00");
                 return;
             }
 
-            // Converte o texto digitado para número decimal
             double valorRecebido = Double.parseDouble(textoRecebido);
-
-            // Faz a conta do troco (Recebido - Total da Compra)
             double troco = valorRecebido - totalCompra;
 
-            // Se o valor recebido for menor que o total (ainda falta dinheiro), não mostra troco negativo
             if (troco < 0) {
                 campoTroco.setText("0,00");
             } else {
-                // Se estiver tudo certo, mostra o troco formatado com duas casas decimais
                 campoTroco.setText(String.format("%.2f", troco));
             }
 
         } catch (NumberFormatException e) {
-            // Se a atendente digitar sem querer uma letra em vez de número, zera o troco
             campoTroco.setText("0,00");
         }
     }
 
-    // Método que adiciona o texto na lista e soma o valor
-    private void adicionarItemAoCarrinho(String descricao, double preco) {
-        // Adiciona o item visualmente na lista do carrinho
-        listaCarrinho.getItems().add(descricao + " - R$ " + String.format("%.2f", preco));
-
-        // Faz a matemática do total
-        totalCompra = totalCompra + preco;
-
-        // Atualiza o texto vermelho do "TOTAL" na tela
-        labelTotal.setText(String.format("R$ %.2f", totalCompra));
-    }
-
     private void finalizarVenda() {
-        // Impede que a atendente guarde uma venda com valor zero
         if (totalCompra <= 0) {
             return;
         }
 
-        // Chama a classe DAO para guardar no banco de dados SQLite
-        boolean sucesso = br.edu.ifba.cantinapdv.dao.VendaDAO.salvarVenda(totalCompra, formaPagamento);
+        boolean sucesso = VendaDAO.salvarVenda(totalCompra, formaPagamento);
 
         if (sucesso) {
             System.out.println("Venda de R$ " + totalCompra + " em " + formaPagamento + " guardada com sucesso!");
 
-            // Limpa a tela em 1 milissegundo para o próximo aluno da fila
             listaCarrinho.getItems().clear();
+            itensCarrinho.clear();
             totalCompra = 0.0;
             labelTotal.setText("R$ 0,00");
             campoValorRecebido.clear();
             campoTroco.clear();
-            formaPagamento = "Dinheiro"; // Volta ao padrão
+            formaPagamento = "Dinheiro";
         }
     }
 }

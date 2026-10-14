@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="540.0" prefWidth="700.0" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.ProdutosController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label text="Gerenciar Produtos">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+
+        <!-- Tabela com os produtos cadastrados -->
+        <TableView fx:id="tabelaProdutos" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colNome" prefWidth="320.0" text="Nome" />
+                <TableColumn fx:id="colCategoria" prefWidth="170.0" text="Categoria" />
+                <TableColumn fx:id="colPreco" prefWidth="150.0" text="Preço" />
+            </columns>
+        </TableView>
+
+        <Label text="Clique em um produto da tabela para editar, ou preencha abaixo para criar um novo:" textFill="#555555" />
+
+        <!-- Formulário -->
+        <HBox spacing="15.0">
+            <children>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Nome" />
+                        <TextField fx:id="campoNome" promptText="Ex.: Pão com ovo" />
+                    </children>
+                </VBox>
+                <VBox spacing="5.0" prefWidth="150.0">
+                    <children>
+                        <Label text="Categoria" />
+                        <ComboBox fx:id="comboCategoria" maxWidth="Infinity" promptText="Escolha" />
+                    </children>
+                </VBox>
+                <VBox spacing="5.0" prefWidth="120.0">
+                    <children>
+                        <Label text="Preço (R$)" />
+                        <TextField fx:id="campoPreco" promptText="0,00" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Botões -->
+        <HBox spacing="10.0">
+            <children>
+                <Button fx:id="btnNovo" mnemonicParsing="false" text="Novo / Limpar" />
+                <Button fx:id="btnSalvar" mnemonicParsing="false" style="-fx-background-color: #1b5e20; -fx-text-fill: white; -fx-font-weight: bold;" text="Salvar" />
+                <Button fx:id="btnRemover" mnemonicParsing="false" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold;" text="Remover" />
+            </children>
+        </HBox>
+
+        <!-- Mensagens de aviso -->
+        <Label fx:id="labelMensagem" text="" />
+    </children>
+</VBox>

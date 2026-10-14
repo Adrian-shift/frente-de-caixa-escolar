@@ -59,6 +59,14 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
+                <Button fx:id="btnGerenciarProdutos" maxWidth="Infinity" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: white;" text="⚙ Gerenciar Produtos">
+                    <padding>
+                        <Insets bottom="15.0" top="15.0" />
+                    </padding>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
             </children>
         </VBox>
     </left>
@@ -83,16 +91,7 @@
                         </Label>
 
                         <!-- FlowPane organiza os botões automaticamente quebrando a linha -->
-                        <FlowPane hgap="15.0" vgap="15.0">
-                            <children>
-                                <Button fx:id="btnFicha3" mnemonicParsing="false" prefHeight="90.0" prefWidth="140.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Ficha R$ 3,00" />
-                                <Button fx:id="btnFicha5" mnemonicParsing="false" prefHeight="90.0" prefWidth="140.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Ficha R$ 5,00" />
-                                <Button fx:id="btnFicha7" mnemonicParsing="false" prefHeight="90.0" prefWidth="140.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Ficha R$ 7,00" />
-                                <Button fx:id="btnFicha10" mnemonicParsing="false" prefHeight="90.0" prefWidth="140.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Ficha R$ 10,00" />
-                                <Button fx:id="btnCafe" mnemonicParsing="false" prefHeight="90.0" prefWidth="140.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Café / Chá" />
-                                <Button fx:id="btnSuco" mnemonicParsing="false" prefHeight="90.0" prefWidth="140.0" style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Suco Copo" />
-                            </children>
-                        </FlowPane>
+                        <FlowPane fx:id="painelProdutos" hgap="15.0" vgap="15.0" />
                     </children>
                     <padding>
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
