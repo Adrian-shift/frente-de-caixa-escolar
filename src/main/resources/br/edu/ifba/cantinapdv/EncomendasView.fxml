@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="740.0" prefWidth="900.0" spacing="12.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.EncomendasController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label text="Encomendas (Marmita / PF)">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+
+        <!-- Dia das encomendas -->
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Label text="Encomendas do dia:" />
+                <DatePicker fx:id="datePicker" />
+            </children>
+        </HBox>
+
+        <!-- Lista do dia -->
+        <TableView fx:id="tabelaEncomendas" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colCliente" prefWidth="160.0" text="Cliente" />
+                <TableColumn fx:id="colProduto" prefWidth="140.0" text="Produto" />
+                <TableColumn fx:id="colQuantidade" prefWidth="50.0" text="Qtd" />
+                <TableColumn fx:id="colTotal" prefWidth="90.0" text="Total" />
+                <TableColumn fx:id="colPagamento" prefWidth="90.0" text="Pagamento" />
+                <TableColumn fx:id="colEntrega" prefWidth="90.0" text="Entrega" />
+                <TableColumn fx:id="colObservacoes" prefWidth="200.0" text="Observações" />
+            </columns>
+        </TableView>
+
+        <Label fx:id="labelResumo" text="">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+
+        <!-- Ações sobre a encomenda selecionada -->
+        <Label text="Com a encomenda selecionada na tabela:" textFill="#555555" />
+        <HBox spacing="10.0">
+            <children>
+                <Button fx:id="btnPagar" mnemonicParsing="false" text="Registrar pagamento" />
+                <Button fx:id="btnEntregar" mnemonicParsing="false" text="Marcar como entregue" />
+                <Button fx:id="btnCancelar" mnemonicParsing="false" style="-fx-background-color: #c0392b; -fx-text-fill: white;" text="Cancelar encomenda" />
+            </children>
+        </HBox>
+
+        <Separator />
+
+        <!-- Nova encomenda -->
+        <Label text="Nova encomenda (para o dia escolhido acima)">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+
+        <HBox spacing="15.0">
+            <children>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Cliente" />
+                        <TextField fx:id="campoCliente" promptText="Nome do aluno" />
+                    </children>
+                </VBox>
+                <VBox prefWidth="240.0" spacing="5.0">
+                    <children>
+                        <Label text="Produto" />
+                        <ComboBox fx:id="comboProduto" maxWidth="Infinity" promptText="Escolha" />
+                    </children>
+                </VBox>
+                <VBox prefWidth="70.0" spacing="5.0">
+                    <children>
+                        <Label text="Qtd" />
+                        <TextField fx:id="campoQuantidade" text="1" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <VBox spacing="5.0">
+            <children>
+                <Label text="Observações (opcional)" />
+                <TextField fx:id="campoObservacoes" promptText="Ex.: sem feijão, entregar no intervalo" />
+            </children>
+        </VBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
+            <children>
+                <CheckBox fx:id="chkPagoAgora" mnemonicParsing="false" text="Já pagou agora" />
+                <ComboBox fx:id="comboPagamento" prefWidth="190.0" promptText="Forma de pagamento" />
+                <Button fx:id="btnAdicionar" mnemonicParsing="false" style="-fx-background-color: #1b5e20; -fx-text-fill: white; -fx-font-weight: bold;" text="Adicionar encomenda" />
+            </children>
+        </HBox>
+        <Label text="A forma de pagamento acima também vale para o botão &quot;Registrar pagamento&quot;." textFill="#555555" />
+
+        <Label fx:id="labelMensagem" text="" />
+    </children>
+</VBox>

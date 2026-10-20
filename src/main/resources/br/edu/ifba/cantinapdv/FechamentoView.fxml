@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="640.0" prefWidth="720.0" spacing="12.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.FechamentoController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <Label text="Fechamento do Caixa">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+
+        <!-- Escolha do dia e exportação -->
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Label text="Data:" />
+                <DatePicker fx:id="datePicker" />
+                <Button fx:id="btnExportar" mnemonicParsing="false" text="Exportar CSV" />
+            </children>
+        </HBox>
+
+        <!-- Totais por forma de pagamento -->
+        <Label text="Por forma de pagamento">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <TableView fx:id="tabelaPagamentos" prefHeight="150.0">
+            <columns>
+                <TableColumn fx:id="colMetodo" prefWidth="300.0" text="Forma de pagamento" />
+                <TableColumn fx:id="colQtdVendas" prefWidth="160.0" text="Nº de vendas" />
+                <TableColumn fx:id="colTotalMetodo" prefWidth="200.0" text="Total" />
+            </columns>
+        </TableView>
+
+        <!-- Total geral -->
+        <HBox alignment="CENTER_LEFT">
+            <children>
+                <Label text="TOTAL DO DIA: ">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Label>
+                <Label fx:id="labelTotalDia" text="R$ 0,00" textFill="#1b5e20">
+                    <font>
+                        <Font name="System Bold" size="28.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+
+        <!-- Itens vendidos -->
+        <Label text="Itens vendidos">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <TableView fx:id="tabelaProdutos" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colProduto" prefWidth="300.0" text="Produto" />
+                <TableColumn fx:id="colQtdProduto" prefWidth="160.0" text="Quantidade" />
+                <TableColumn fx:id="colTotalProduto" prefWidth="200.0" text="Total" />
+            </columns>
+        </TableView>
+
+        <Label fx:id="labelMensagem" text="" />
+    </children>
+</VBox>
