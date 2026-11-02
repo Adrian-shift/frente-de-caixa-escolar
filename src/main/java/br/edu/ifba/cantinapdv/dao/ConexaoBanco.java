@@ -77,10 +77,15 @@ public class ConexaoBanco {
             adicionarColunaSeNaoExistir(conn, "encomendas", "data_entrega", "TEXT");
             adicionarColunaSeNaoExistir(conn, "encomendas", "id_venda", "INTEGER");
 
+            // Cancelamento de vendas (a venda nunca é apagada, só marcada)
+            adicionarColunaSeNaoExistir(conn, "vendas", "cancelada", "INTEGER NOT NULL DEFAULT 0");
+            adicionarColunaSeNaoExistir(conn, "vendas", "motivo_cancelamento", "TEXT");
+            adicionarColunaSeNaoExistir(conn, "vendas", "data_cancelamento", "DATETIME");
+
             cadastrarProdutosIniciais(conn);
             System.out.println("Banco de dados pronto!");
         } catch (SQLException e) {
-            System.err.println("Erro ao criar tabelas: " + e.getMessage());
+            Log.erro("Erro ao criar tabelas: " + e.getMessage());
         }
     }
 

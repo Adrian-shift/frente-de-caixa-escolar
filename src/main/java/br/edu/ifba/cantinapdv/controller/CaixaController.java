@@ -1,11 +1,13 @@
 package br.edu.ifba.cantinapdv.controller;
 
+import br.edu.ifba.cantinapdv.dao.Log;
 import br.edu.ifba.cantinapdv.dao.ProdutoDAO;
 import br.edu.ifba.cantinapdv.dao.VendaDAO;
 import br.edu.ifba.cantinapdv.model.Produto;
 import javafx.beans.binding.Bindings;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -16,12 +18,18 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class CaixaController {
 
     // Estado "ativo" dos botões de pagamento (o estilo dele está no estilo.css)
     private static final PseudoClass PSEUDO_ATIVO = PseudoClass.getPseudoClass("ativo");
+
+    // Formato aceito no valor recebido: números com até 2 casas decimais (vírgula ou ponto)
+    private static final Pattern PADRAO_VALOR = Pattern.compile("\\d*([.,]\\d{0,2})?");
 
     // Teclas de atalho (só valem enquanto a tela de vendas está visível)
     private final KeyCodeCombination atalhoF1 = new KeyCodeCombination(KeyCode.F1);
@@ -60,14 +68,21 @@ public class CaixaController {
     @FXML
     private TextField campoTroco;
 
+    // Aviso em vermelho abaixo dos campos (ex.: "Faltam R$ 3,00")
+    @FXML
+    private Label labelAviso;
+
     // Forma de pagamento escolhida (padrão: Dinheiro)
     private String formaPagamento = "Dinheiro";
 
     // Soma dos itens
     private double totalCompra = 0.0;
 
-    // Produtos que estão no carrinho (na mesma ordem da lista da tela)
+    // Um produto por clique (é isso que vai para o banco; o VendaDAO agrupa por produto)
     private final List<Produto> itensCarrinho = new ArrayList<>();
+
+    // Para cada linha da lista da tela, o id do produto que ela representa
+    private final List<Integer> idsDasLinhas = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -124,6 +139,9 @@ public class CaixaController {
         btnDinheiro.pseudoClassStateChanged(PSEUDO_ATIVO, forma.equals("Dinheiro"));
         btnCartao.pseudoClassStateChanged(PSEUDO_ATIVO, forma.equals("Cartão"));
         btnPix.pseudoClassStateChanged(PSEUDO_ATIVO, forma.equals("PIX"));
+
+        // O aviso de "faltam R$..." só vale para dinheiro, então atualiza ao trocar a forma
+        calcularTroco();
     }
 
     // Lê os produtos ativos do banco e cria um botão para cada um
@@ -170,31 +188,72 @@ public class CaixaController {
     }
 
     private void adicionarItemAoCarrinho(Produto produto) {
-        listaCarrinho.getItems().add(produto.getNome() + " - R$ " + String.format("%.2f", produto.getPreco()));
         itensCarrinho.add(produto);
+        atualizarListaVisual(null);
 
-        // Sem nada selecionado, "Remover item" desfaz sempre o último adicionado
+        // Sem nada selecionado, "Remover item" desfaz sempre o último clique
         listaCarrinho.getSelectionModel().clearSelection();
-        // Mostra o item recém-adicionado, mesmo com o carrinho cheio
-        listaCarrinho.scrollTo(itensCarrinho.size() - 1);
+        // Mostra a linha do produto recém-clicado, mesmo com o carrinho cheio
+        listaCarrinho.scrollTo(idsDasLinhas.indexOf(produto.getId()));
 
         recalcularTotal();
     }
 
-    // Remove o item selecionado na lista; se nada estiver selecionado, remove o último
+    // Monta a lista da tela juntando os itens iguais: "3 × Ficha R$ 5,00 — R$ 15,00".
+    // Se idParaSelecionar não for null, deixa a linha desse produto selecionada.
+    private void atualizarListaVisual(Integer idParaSelecionar) {
+        Map<Integer, Produto> produtos = new LinkedHashMap<>();
+        Map<Integer, Integer> quantidades = new LinkedHashMap<>();
+        for (Produto p : itensCarrinho) {
+            produtos.putIfAbsent(p.getId(), p);
+            quantidades.merge(p.getId(), 1, Integer::sum);
+        }
+
+        List<String> linhas = new ArrayList<>();
+        idsDasLinhas.clear();
+        for (Map.Entry<Integer, Integer> entrada : quantidades.entrySet()) {
+            Produto p = produtos.get(entrada.getKey());
+            int quantidade = entrada.getValue();
+
+            linhas.add(quantidade + " × " + p.getNome() + " — R$ " + String.format("%.2f", p.getPreco() * quantidade));
+            idsDasLinhas.add(entrada.getKey());
+        }
+
+        listaCarrinho.getItems().setAll(linhas);
+
+        if (idParaSelecionar != null) {
+            int indice = idsDasLinhas.indexOf(idParaSelecionar);
+            if (indice >= 0) {
+                listaCarrinho.getSelectionModel().select(indice);
+            }
+        }
+    }
+
+    // Tira UMA unidade: do produto da linha selecionada ou, sem seleção, do último clique
     private void removerItemSelecionado() {
         if (itensCarrinho.isEmpty()) {
             return;
         }
 
-        int indice = listaCarrinho.getSelectionModel().getSelectedIndex();
-        if (indice < 0) {
-            indice = itensCarrinho.size() - 1;
-        }
+        int linha = listaCarrinho.getSelectionModel().getSelectedIndex();
 
-        listaCarrinho.getItems().remove(indice);
-        itensCarrinho.remove(indice);
-        listaCarrinho.getSelectionModel().clearSelection();
+        if (linha >= 0 && linha < idsDasLinhas.size()) {
+            int idRemovido = idsDasLinhas.get(linha);
+
+            // Remove a última unidade desse produto
+            for (int i = itensCarrinho.size() - 1; i >= 0; i--) {
+                if (itensCarrinho.get(i).getId() == idRemovido) {
+                    itensCarrinho.remove(i);
+                    break;
+                }
+            }
+            // Mantém a linha selecionada (se ainda existir) para poder clicar de novo
+            atualizarListaVisual(idRemovido);
+        } else {
+            itensCarrinho.remove(itensCarrinho.size() - 1);
+            atualizarListaVisual(null);
+            listaCarrinho.getSelectionModel().clearSelection();
+        }
 
         recalcularTotal();
     }
@@ -214,6 +273,7 @@ public class CaixaController {
     // Esvazia o pedido e volta a tela ao estado inicial
     private void limparPedido() {
         listaCarrinho.getItems().clear();
+        idsDasLinhas.clear();
         itensCarrinho.clear();
         totalCompra = 0.0;
         labelTotal.setText("R$ 0,00");
@@ -224,27 +284,91 @@ public class CaixaController {
         selecionarFormaPagamento("Dinheiro");
     }
 
+    // Converte o texto digitado em número. Lança NumberFormatException se o formato for inválido.
+    private double converterValor(String texto) {
+        String limpo = texto.trim();
+        if (!PADRAO_VALOR.matcher(limpo).matches()) {
+            throw new NumberFormatException("valor inválido");
+        }
+        return Double.parseDouble(limpo.replace(",", "."));
+    }
+
+    // Calcula o troco e mostra o aviso "Faltam R$ ..." quando o dinheiro não cobre o total
     private void calcularTroco() {
+        labelAviso.setText("");
+
+        if (campoValorRecebido.getText().trim().isEmpty()) {
+            campoTroco.setText("0,00");
+            return;
+        }
+
         try {
-            String textoRecebido = campoValorRecebido.getText().replace(",", ".");
+            double valorRecebido = converterValor(campoValorRecebido.getText());
 
-            if (textoRecebido.isEmpty()) {
-                campoTroco.setText("0,00");
-                return;
-            }
+            // Compara em centavos, para não ter erro de arredondamento
+            long recebidoCentavos = Math.round(valorRecebido * 100);
+            long totalCentavos = Math.round(totalCompra * 100);
 
-            double valorRecebido = Double.parseDouble(textoRecebido);
-            double troco = valorRecebido - totalCompra;
-
-            if (troco < 0) {
-                campoTroco.setText("0,00");
+            if (recebidoCentavos >= totalCentavos) {
+                campoTroco.setText(String.format("%.2f", (recebidoCentavos - totalCentavos) / 100.0));
             } else {
-                campoTroco.setText(String.format("%.2f", troco));
+                campoTroco.setText("0,00");
+                if (formaPagamento.equals("Dinheiro") && totalCentavos > 0) {
+                    labelAviso.setText(String.format("Faltam R$ %.2f", (totalCentavos - recebidoCentavos) / 100.0));
+                }
             }
 
         } catch (NumberFormatException e) {
             campoTroco.setText("0,00");
+            if (formaPagamento.equals("Dinheiro")) {
+                labelAviso.setText("Valor recebido inválido");
+            }
         }
+    }
+
+    // Em dinheiro, se a atendente digitou o valor recebido, ele precisa cobrir o total.
+    // Se não digitou nada, tudo bem (ex.: pagou o valor exato).
+    private boolean valorRecebidoEstaCerto() {
+        if (campoValorRecebido.getText().trim().isEmpty()) {
+            return true;
+        }
+
+        double recebido;
+        try {
+            recebido = converterValor(campoValorRecebido.getText());
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Valor recebido", "Valor recebido inválido",
+                    "Digite só números, com até 2 casas decimais. Exemplo: 20,00");
+            focarValorRecebido();
+            return false;
+        }
+
+        long recebidoCentavos = Math.round(recebido * 100);
+        long totalCentavos = Math.round(totalCompra * 100);
+
+        if (recebidoCentavos < totalCentavos) {
+            double faltam = (totalCentavos - recebidoCentavos) / 100.0;
+            mostrarAlerta(Alert.AlertType.WARNING, "Valor recebido", "O valor recebido é menor que o total",
+                    String.format("Total: R$ %.2f%nRecebido: R$ %.2f%nFaltam: R$ %.2f", totalCompra, recebido, faltam));
+            focarValorRecebido();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void focarValorRecebido() {
+        campoValorRecebido.requestFocus();
+        campoValorRecebido.selectAll();
+    }
+
+    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String cabecalho, String texto) {
+        Alert alerta = new Alert(tipo);
+        alerta.initOwner(btnFinalizar.getScene().getWindow());
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(cabecalho);
+        alerta.setContentText(texto);
+        alerta.showAndWait();
     }
 
     private void finalizarVenda() {
@@ -252,11 +376,23 @@ public class CaixaController {
             return;
         }
 
+        // Em dinheiro, o valor recebido (se foi digitado) precisa cobrir o total
+        if (formaPagamento.equals("Dinheiro") && !valorRecebidoEstaCerto()) {
+            return;
+        }
+
         boolean sucesso = VendaDAO.salvarVenda(totalCompra, formaPagamento, itensCarrinho);
 
         if (sucesso) {
-            System.out.println("Venda de R$ " + totalCompra + " em " + formaPagamento + " guardada com sucesso!");
+            Log.info(String.format("Venda registrada: R$ %.2f em %s", totalCompra, formaPagamento));
             limparPedido();
+        } else {
+            // O pedido NÃO é apagado: a atendente pode tentar de novo
+            mostrarAlerta(Alert.AlertType.ERROR, "Venda não registrada",
+                    "ATENÇÃO: esta venda NÃO foi registrada!",
+                    "O pedido continua na tela. Tente finalizar de novo.\n\n"
+                            + "Se o erro continuar, anote esta venda no caderno e avise o responsável pelo sistema.\n\n"
+                            + "Detalhes no arquivo de log:\n" + Log.getArquivo());
         }
     }
 }

@@ -30,7 +30,7 @@ public class ProdutoDAO {
                         rs.getInt("ativo") == 1));
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao listar produtos: " + e.getMessage());
+            Log.erro("Erro ao listar produtos: " + e.getMessage());
         }
         return lista;
     }
@@ -49,7 +49,7 @@ public class ProdutoDAO {
             return true;
 
         } catch (SQLException e) {
-            System.err.println("Erro ao inserir produto: " + e.getMessage());
+            Log.erro("Erro ao inserir produto: " + e.getMessage());
             return false;
         }
     }
@@ -69,7 +69,7 @@ public class ProdutoDAO {
             return true;
 
         } catch (SQLException e) {
-            System.err.println("Erro ao atualizar produto: " + e.getMessage());
+            Log.erro("Erro ao atualizar produto: " + e.getMessage());
             return false;
         }
     }
@@ -86,7 +86,7 @@ public class ProdutoDAO {
             return true;
 
         } catch (SQLException e) {
-            System.err.println("Erro ao remover produto: " + e.getMessage());
+            Log.erro("Erro ao remover produto: " + e.getMessage());
             return false;
         }
     }

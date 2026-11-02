@@ -149,7 +149,7 @@ public class ProdutosController {
             limparFormulario();
             labelMensagem.setText("Produto salvo com sucesso!");
         } else {
-            mostrarAviso("Não foi possível salvar. Veja o erro no console.");
+            mostrarAviso("Não foi possível salvar. Veja o erro no arquivo de log(.");
         }
     }
 
@@ -172,7 +172,7 @@ public class ProdutosController {
                 limparFormulario();
                 labelMensagem.setText("Produto removido.");
             } else {
-                mostrarAviso("Não foi possível remover. Veja o erro no console.");
+                mostrarAviso("Não foi possível remover. Veja o erro no arquivo de log(.");
             }
         }
     }

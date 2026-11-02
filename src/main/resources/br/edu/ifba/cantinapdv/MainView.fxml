@@ -75,6 +75,19 @@
                     </padding>
                 </ToggleButton>
 
+                <ToggleButton fx:id="btnVendasDia" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Vendas do Dia" toggleGroup="$grupoMenu">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/historico.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                    </padding>
+                </ToggleButton>
+
                 <ToggleButton fx:id="btnFechamento" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Fechamento do Caixa" toggleGroup="$grupoMenu">
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">

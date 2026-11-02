@@ -43,6 +43,8 @@ public class FechamentoController {
 
     @FXML
     private Label labelTotalDia;
+    @FXML
+    private Label labelCancelamentos;
 
     @FXML
     private TableView<LinhaResumo> tabelaProdutos;
@@ -118,6 +120,14 @@ public class FechamentoController {
             totalDia += linha.getTotal();
         }
         labelTotalDia.setText(String.format("R$ %.2f", totalDia));
+        LinhaResumo canceladas = RelatorioDAO.resumoCancelamentos(data);
+        if (canceladas.getQuantidade() > 0) {
+            labelCancelamentos.setText(String.format(
+                    "Vendas canceladas neste dia: %d (R$ %.2f). Elas não entram no total acima.",
+                    canceladas.getQuantidade(), canceladas.getTotal()));
+        } else {
+            labelCancelamentos.setText("");
+        }
         labelMensagem.setText("");
     }
 

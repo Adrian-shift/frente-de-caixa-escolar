@@ -215,7 +215,7 @@ public class EncomendasController {
             limparFormulario();
             labelMensagem.setText("Encomenda cadastrada!");
         } else {
-            aviso("Não foi possível salvar. Veja o erro no console.");
+            aviso("Não foi possível salvar. Veja o erro no arquivo de log(.");
         }
     }
 
@@ -240,7 +240,7 @@ public class EncomendasController {
             carregarEncomendas();
             labelMensagem.setText("Pagamento registrado em " + metodo + ". Ele já entra no Fechamento do Caixa de hoje.");
         } else {
-            aviso("Não foi possível registrar o pagamento. Veja o erro no console.");
+            aviso("Não foi possível registrar o pagamento. Veja o erro no arquivo de log(.");
         }
     }
 
@@ -264,7 +264,7 @@ public class EncomendasController {
             carregarEncomendas();
             labelMensagem.setText("Encomenda entregue.");
         } else {
-            aviso("Não foi possível marcar a entrega. Veja o erro no console.");
+            aviso("Não foi possível marcar a entrega. Veja o erro no arquivo de log(.");
         }
     }
 
@@ -291,7 +291,7 @@ public class EncomendasController {
                 carregarEncomendas();
                 labelMensagem.setText("Encomenda cancelada.");
             } else {
-                aviso("Não foi possível cancelar. Veja o erro no console.");
+                aviso("Não foi possível cancelar. Veja o erro no arquivo de log(.");
             }
         }
     }

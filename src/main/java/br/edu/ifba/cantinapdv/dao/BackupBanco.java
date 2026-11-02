@@ -46,7 +46,7 @@ public class BackupBanco {
             return destino;
 
         } catch (IOException | SQLException e) {
-            System.err.println("Erro ao fazer backup: " + e.getMessage());
+            Log.erro("Erro ao fazer backup: " + e.getMessage());
             return null;
         }
     }

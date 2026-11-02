@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="12.0" styleClass="tela" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.VendasDiaController">
+    <padding>
+        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+    </padding>
+    <children>
+        <Label text="Vendas do Dia">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Label text="Data:" />
+                <DatePicker fx:id="datePicker" />
+                <Label fx:id="labelResumoDia" text="">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0" />
+                    </HBox.margin>
+                </Label>
+            </children>
+        </HBox>
+
+        <!-- Lista de vendas -->
+        <TableView fx:id="tabelaVendas" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colHora" prefWidth="70.0" text="Hora" />
+                <TableColumn fx:id="colItens" prefWidth="380.0" text="Itens" />
+                <TableColumn fx:id="colPagamento" prefWidth="110.0" text="Pagamento" />
+                <TableColumn fx:id="colTotal" prefWidth="100.0" text="Total" />
+                <TableColumn fx:id="colSituacao" prefWidth="100.0" text="Situação" />
+            </columns>
+        </TableView>
+
+        <Label text="Selecione uma venda para cancelar. Vendas canceladas não entram no Fechamento do Caixa, mas continuam registradas." textFill="#555555" wrapText="true" />
+
+        <HBox spacing="10.0">
+            <children>
+                <Button fx:id="btnCancelar" mnemonicParsing="false" styleClass="botao-acao, acao-perigo" text="Cancelar venda selecionada" />
+            </children>
+        </HBox>
+
+        <Label fx:id="labelMensagem" text="" wrapText="true" />
+    </children>
+</VBox>

@@ -54,7 +54,8 @@
                 </Label>
             </children>
         </HBox>
-
+        <!-- Aviso de vendas canceladas no dia -->
+        <Label fx:id="labelCancelamentos" text="" textFill="#c0392b" />
         <!-- Itens vendidos -->
         <Label text="Itens vendidos">
             <font>

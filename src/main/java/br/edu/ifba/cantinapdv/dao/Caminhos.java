@@ -15,7 +15,7 @@ public class Caminhos {
         try {
             Files.createDirectories(PASTA_DADOS);
         } catch (IOException e) {
-            System.err.println("Não foi possível criar a pasta de dados: " + e.getMessage());
+            Log.erro("Não foi possível criar a pasta de dados: " + e.getMessage());
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class RelatorioDAO {
 
-    // Total vendido no dia, separado por forma de pagamento.
+    // Total vendido no dia, separado por forma de pagamento (sem as vendas canceladas).
     // Sempre devolve as 3 formas, mesmo que alguma tenha zero vendas.
     public static List<LinhaResumo> resumoPorPagamento(LocalDate data) {
         Map<String, LinhaResumo> mapa = new LinkedHashMap<>();
@@ -25,7 +25,7 @@ public class RelatorioDAO {
         // 'localtime' converte a hora (que o SQLite guarda em UTC) para o horário do computador
         String sql = "SELECT metodo_pagamento, COUNT(*) AS qtd, SUM(valor_total) AS total "
                 + "FROM vendas "
-                + "WHERE date(data_hora, 'localtime') = ? "
+                + "WHERE date(data_hora, 'localtime') = ? AND cancelada = 0 "
                 + "GROUP BY metodo_pagamento";
 
         try (Connection conn = ConexaoBanco.conectar();
@@ -40,12 +40,12 @@ public class RelatorioDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao gerar resumo por pagamento: " + e.getMessage());
+            Log.erro("Erro ao gerar resumo por pagamento", e);
         }
         return new ArrayList<>(mapa.values());
     }
 
-    // O que foi vendido no dia: produto, quantidade e total (mais vendidos primeiro)
+    // O que foi vendido no dia (sem as vendas canceladas): produto, quantidade e total
     public static List<LinhaResumo> resumoPorProduto(LocalDate data) {
         List<LinhaResumo> lista = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class RelatorioDAO {
                 + "FROM itens_venda i "
                 + "JOIN vendas v ON v.id_venda = i.id_venda "
                 + "JOIN produtos p ON p.id_produto = i.id_produto "
-                + "WHERE date(v.data_hora, 'localtime') = ? "
+                + "WHERE date(v.data_hora, 'localtime') = ? AND v.cancelada = 0 "
                 + "GROUP BY p.id_produto, p.nome "
                 + "ORDER BY qtd DESC";
 
@@ -68,8 +68,30 @@ public class RelatorioDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao gerar resumo por produto: " + e.getMessage());
+            Log.erro("Erro ao gerar resumo por produto", e);
         }
         return lista;
+    }
+
+    // Quantas vendas foram canceladas no dia e quanto valiam (só para aviso no Fechamento)
+    public static LinhaResumo resumoCancelamentos(LocalDate data) {
+        String sql = "SELECT COUNT(*) AS qtd, COALESCE(SUM(valor_total), 0) AS total "
+                + "FROM vendas "
+                + "WHERE date(data_hora, 'localtime') = ? AND cancelada = 1";
+
+        try (Connection conn = ConexaoBanco.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, data.toString());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new LinhaResumo("Canceladas", rs.getInt("qtd"), rs.getDouble("total"));
+                }
+            }
+        } catch (SQLException e) {
+            Log.erro("Erro ao gerar resumo de cancelamentos", e);
+        }
+        return new LinhaResumo("Canceladas", 0, 0.0);
     }
 }

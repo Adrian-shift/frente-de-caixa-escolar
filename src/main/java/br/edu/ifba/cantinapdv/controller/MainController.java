@@ -1,6 +1,7 @@
 package br.edu.ifba.cantinapdv.controller;
 
 import br.edu.ifba.cantinapdv.dao.BackupBanco;
+import br.edu.ifba.cantinapdv.dao.Log;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,6 +29,8 @@ public class MainController {
     @FXML
     private ToggleButton btnFechamento;
     @FXML
+    private ToggleButton btnVendasDia;
+    @FXML
     private ToggleButton btnProdutos;
 
     @FXML
@@ -40,7 +43,6 @@ public class MainController {
 
     @FXML
     public void initialize() {
-
         // Impede "desmarcar" o botão da área atual ao clicar nele de novo
         grupoMenu.selectedToggleProperty().addListener((obs, antigo, novo) -> {
             if (novo == null && antigo != null) {
@@ -52,6 +54,7 @@ public class MainController {
         btnVenda.setOnAction(e -> mostrarVenda());
         btnEncomendas.setOnAction(e -> mostrarTela("EncomendasView.fxml"));
         btnFechamento.setOnAction(e -> mostrarTela("FechamentoView.fxml"));
+        btnVendasDia.setOnAction(e -> mostrarTela("VendasDiaView.fxml"));
         btnProdutos.setOnAction(e -> mostrarTela("ProdutosView.fxml"));
 
         btnBackup.setOnAction(e -> fazerBackupManual());
@@ -76,7 +79,7 @@ public class MainController {
 
             areaConteudo.getChildren().setAll(telaVenda);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            mostrarErroDeTela(ex);
         }
     }
 
@@ -87,8 +90,19 @@ public class MainController {
             Parent tela = loader.load();
             areaConteudo.getChildren().setAll(tela);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            mostrarErroDeTela(ex);
         }
+    }
+
+    // Grava o erro no log e avisa na tela (antes a tela simplesmente ficava em branco)
+    private void mostrarErroDeTela(IOException ex) {
+        Log.erro("Erro ao abrir uma tela do sistema", ex);
+
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle("Erro");
+        alerta.setHeaderText("Não foi possível abrir esta tela.");
+        alerta.setContentText("Detalhes no arquivo de log:\n" + Log.getArquivo());
+        alerta.showAndWait();
     }
 
     // Faz o backup na hora e avisa onde o arquivo foi salvo
@@ -102,7 +116,7 @@ public class MainController {
             alerta.setContentText("Arquivo salvo em:\n" + arquivo);
         } else {
             alerta.setHeaderText("Não foi possível fazer o backup.");
-            alerta.setContentText("Veja a mensagem de erro no console.");
+            alerta.setContentText("Detalhes no arquivo de log:\n" + Log.getArquivo());
         }
         alerta.showAndWait();
     }

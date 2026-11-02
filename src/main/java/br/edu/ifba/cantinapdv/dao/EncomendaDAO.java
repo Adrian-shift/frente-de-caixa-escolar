@@ -47,7 +47,7 @@ public class EncomendaDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Erro ao listar encomendas: " + e.getMessage());
+            Log.erro("Erro ao listar encomendas: " + e.getMessage());
         }
         return lista;
     }
@@ -96,7 +96,7 @@ public class EncomendaDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao salvar encomenda: " + e.getMessage());
+            Log.erro("Erro ao salvar encomenda: " + e.getMessage());
             return false;
         }
     }
@@ -131,7 +131,7 @@ public class EncomendaDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Erro ao registrar pagamento: " + e.getMessage());
+            Log.erro("Erro ao registrar pagamento: " + e.getMessage());
             return false;
         }
     }
@@ -146,7 +146,7 @@ public class EncomendaDAO {
             return pstmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.err.println("Erro ao marcar entrega: " + e.getMessage());
+            Log.erro("Erro ao marcar entrega: " + e.getMessage());
             return false;
         }
     }
@@ -162,7 +162,7 @@ public class EncomendaDAO {
             return pstmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.err.println("Erro ao cancelar encomenda: " + e.getMessage());
+            Log.erro("Erro ao cancelar encomenda: " + e.getMessage());
             return false;
         }
     }
