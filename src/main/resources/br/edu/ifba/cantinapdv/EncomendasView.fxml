@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="740.0" prefWidth="900.0" spacing="12.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.EncomendasController">
+<VBox prefHeight="740.0" prefWidth="900.0" spacing="12.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.EncomendasController" stylesheets="@estilo.css" styleClass="tela">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -47,9 +47,9 @@
         <Label text="Com a encomenda selecionada na tabela:" textFill="#555555" />
         <HBox spacing="10.0">
             <children>
-                <Button fx:id="btnPagar" mnemonicParsing="false" text="Registrar pagamento" />
-                <Button fx:id="btnEntregar" mnemonicParsing="false" text="Marcar como entregue" />
-                <Button fx:id="btnCancelar" mnemonicParsing="false" style="-fx-background-color: #c0392b; -fx-text-fill: white;" text="Cancelar encomenda" />
+                <Button fx:id="btnPagar" mnemonicParsing="false" styleClass="botao-acao, acao-primaria" text="Registrar pagamento" />
+                <Button fx:id="btnEntregar" mnemonicParsing="false" styleClass="botao-acao, acao-neutra" text="Marcar como entregue" />
+                <Button fx:id="btnCancelar" mnemonicParsing="false" styleClass="botao-acao, acao-perigo" text="Cancelar encomenda" />
             </children>
         </HBox>
 
@@ -96,7 +96,7 @@
             <children>
                 <CheckBox fx:id="chkPagoAgora" mnemonicParsing="false" text="Já pagou agora" />
                 <ComboBox fx:id="comboPagamento" prefWidth="190.0" promptText="Forma de pagamento" />
-                <Button fx:id="btnAdicionar" mnemonicParsing="false" style="-fx-background-color: #1b5e20; -fx-text-fill: white; -fx-font-weight: bold;" text="Adicionar encomenda" />
+                <Button fx:id="btnAdicionar" mnemonicParsing="false" styleClass="botao-acao, acao-primaria" text="Adicionar encomenda" />
             </children>
         </HBox>
         <Label text="A forma de pagamento acima também vale para o botão &quot;Registrar pagamento&quot;." textFill="#555555" />

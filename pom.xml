@@ -76,6 +76,35 @@
                     <mainClass>br.edu.ifba.cantinapdv.Main</mainClass>
                 </configuration>
             </plugin>
+            <!-- Gera o .jar do projeto dentro de target/libs -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                </configuration>
+            </plugin>
+
+            <!-- Copia as bibliotecas (JavaFX, SQLite...) para target/libs -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>copiar-bibliotecas</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

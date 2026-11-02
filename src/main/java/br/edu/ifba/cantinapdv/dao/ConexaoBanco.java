@@ -11,7 +11,7 @@ import java.sql.Statement;
 
 public class ConexaoBanco {
     // Nome do arquivo do banco, criado na pasta do projeto
-    private static final String URL = "jdbc:sqlite:cantina.db";
+    private static final String URL = "jdbc:sqlite:" + Caminhos.arquivoBanco();
 
     // Abre uma conexão. Quem chama é responsável por tratar o erro.
     public static Connection conectar() throws SQLException {
@@ -71,10 +71,33 @@ public class ConexaoBanco {
             for (String sql : comandos) {
                 stmt.execute(sql);
             }
+            // Atualiza a tabela encomendas (bancos criados antes desta etapa não têm estas colunas)
+            adicionarColunaSeNaoExistir(conn, "encomendas", "quantidade", "INTEGER NOT NULL DEFAULT 1");
+            adicionarColunaSeNaoExistir(conn, "encomendas", "valor_total", "REAL NOT NULL DEFAULT 0");
+            adicionarColunaSeNaoExistir(conn, "encomendas", "data_entrega", "TEXT");
+            adicionarColunaSeNaoExistir(conn, "encomendas", "id_venda", "INTEGER");
+
             cadastrarProdutosIniciais(conn);
             System.out.println("Banco de dados pronto!");
         } catch (SQLException e) {
             System.err.println("Erro ao criar tabelas: " + e.getMessage());
+        }
+    }
+
+    // Cria a coluna só se ela ainda não existir na tabela
+    private static void adicionarColunaSeNaoExistir(Connection conn, String tabela, String coluna, String definicao)
+            throws SQLException {
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("PRAGMA table_info(" + tabela + ")")) {
+            while (rs.next()) {
+                if (rs.getString("name").equalsIgnoreCase(coluna)) {
+                    return; // já existe, não faz nada
+                }
+            }
+        }
+
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute("ALTER TABLE " + tabela + " ADD COLUMN " + coluna + " " + definicao);
         }
     }
 

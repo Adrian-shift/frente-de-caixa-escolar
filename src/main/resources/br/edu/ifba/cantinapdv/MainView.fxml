@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.MainController" stylesheets="@estilo.css" styleClass="tela">
+
+    <!-- Grupo que garante que só um botão do menu fique marcado -->
+    <fx:define>
+        <ToggleGroup fx:id="grupoMenu" />
+    </fx:define>
+
+    <!-- ============================================== -->
+    <!-- MENU LATERAL (sempre visível)                  -->
+    <!-- ============================================== -->
+    <left>
+        <VBox prefWidth="250.0" styleClass="menu-lateral" BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Quadro branco com a logo (a logo é verde, então precisa de fundo claro) -->
+                <StackPane maxHeight="130.0" maxWidth="130.0" prefHeight="130.0" prefWidth="130.0" styleClass="logo-quadro">
+                    <children>
+                        <ImageView fitHeight="110.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/logo.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="60.0" top="25.0" />
+                    </VBox.margin>
+                </StackPane>
+
+                <Label text="PDV CANTINA" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                    </VBox.margin>
+                </Label>
+                <Label text="IFBA Campus Irecê" textFill="#a5d6a7">
+                    <VBox.margin>
+                        <Insets bottom="25.0" left="20.0" />
+                    </VBox.margin>
+                </Label>
+
+                <ToggleButton fx:id="btnVenda" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Venda Rápida" toggleGroup="$grupoMenu">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/vendas.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                    </padding>
+                </ToggleButton>
+
+                <ToggleButton fx:id="btnEncomendas" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Encomendas (Marmita)" toggleGroup="$grupoMenu">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/encomendas.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                    </padding>
+                </ToggleButton>
+
+                <ToggleButton fx:id="btnFechamento" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Fechamento do Caixa" toggleGroup="$grupoMenu">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/fechamento.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                    </padding>
+                </ToggleButton>
+
+                <ToggleButton fx:id="btnProdutos" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Gerenciar Produtos" toggleGroup="$grupoMenu">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/produtos.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                    </padding>
+                </ToggleButton>
+
+                <!-- Espaço que empurra o botão de backup para o fim do menu -->
+                <Region VBox.vgrow="ALWAYS" />
+
+                <Button fx:id="btnBackup" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu, botao-backup" text="Backup agora">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/backup.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                    </padding>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+
+    <!-- ============================================== -->
+    <!-- ÁREA CENTRAL (a tela da vez aparece aqui)      -->
+    <!-- ============================================== -->
+    <center>
+        <StackPane fx:id="areaConteudo" BorderPane.alignment="CENTER" />
+    </center>
+</BorderPane>

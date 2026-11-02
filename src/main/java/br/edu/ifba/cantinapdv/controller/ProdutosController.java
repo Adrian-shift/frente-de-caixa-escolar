@@ -49,6 +49,8 @@ public class ProdutosController {
 
     @FXML
     public void initialize() {
+
+        tabelaProdutos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         // Diz a cada coluna qual dado do Produto mostrar (usa os getters: getNome, getCategoria, getPreco)
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));

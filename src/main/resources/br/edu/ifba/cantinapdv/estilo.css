@@ -1,0 +1,257 @@
+/* ==========================================================
+   CantinaFast - estilo.css
+   ========================================================== */
+
+/* ---------- Cores do sistema ---------- */
+.root,
+.tela {
+    -cor-primaria: #1b5e20;
+    -cor-primaria-clara: #2e7d32;
+    -cor-neutra: #455a64;
+    -cor-perigo: #c0392b;
+    -fx-background-color: #f4f6f5;
+}
+
+/* ---------- Menu lateral ---------- */
+.menu-lateral {
+    -fx-background-color: -cor-primaria;
+}
+
+.logo-quadro {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+}
+
+.botao-menu {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+}
+
+.botao-menu:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Área atual: fundo mais claro e uma barra branca na esquerda */
+.botao-menu:selected {
+    -fx-background-color: -cor-primaria-clara;
+    -fx-font-weight: bold;
+    -fx-border-color: white;
+    -fx-border-width: 0 0 0 4;
+}
+
+.botao-backup {
+    -fx-text-fill: #a5d6a7;
+}
+
+/* ---------- Tela de vendas: produtos ---------- */
+.botao-produto {
+    -cor-cat: #546e7a;
+    -fx-background-color: -cor-cat;
+    -fx-background-insets: 0;
+    -fx-background-radius: 12;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 6, 0, 0, 2);
+}
+
+.botao-produto:hover {
+    -fx-background-color: derive(-cor-cat, 15%);
+}
+
+.botao-produto:pressed {
+    -fx-background-color: derive(-cor-cat, -15%);
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+}
+
+/* Cor de cada categoria (precisam vir DEPOIS do .botao-produto) */
+.cat-ficha   { -cor-cat: #2e7d32; }
+.cat-bebida  { -cor-cat: #1565c0; }
+.cat-lanche  { -cor-cat: #d84315; }
+.cat-marmita { -cor-cat: #6a1b9a; }
+.cat-outro   { -cor-cat: #546e7a; }
+
+/* ---------- Tela de vendas: pedido e pagamento ---------- */
+.painel-pedido {
+    -fx-background-color: white;
+    -fx-border-color: #dfe5e2;
+    -fx-border-width: 0 0 0 1;
+}
+
+.lista-carrinho {
+    -fx-font-size: 16px;
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-color: #dfe5e2;
+    -fx-border-radius: 8;
+}
+
+.lista-carrinho .list-cell {
+    -fx-padding: 10 12 10 12;
+    -fx-border-color: transparent transparent #eceff1 transparent;
+}
+
+.lista-carrinho .list-cell:filled:selected {
+    -fx-background-color: #c8e6c9;
+    -fx-text-fill: #1b5e20;
+}
+
+.caixa-total {
+    -fx-background-color: #fdecea;
+    -fx-background-radius: 10;
+    -fx-padding: 8 14 8 14;
+}
+
+.botao-pagamento {
+    -fx-background-color: -cor-neutra;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 8 12 8;
+    -fx-cursor: hand;
+}
+
+.botao-pagamento:hover {
+    -fx-background-color: derive(-cor-neutra, 18%);
+}
+
+/* Forma de pagamento escolhida: verde com contorno claro e brilho */
+.botao-pagamento:ativo,
+.botao-pagamento:ativo:hover {
+    -fx-background-color: -cor-primaria-clara;
+    -fx-border-color: #a5d6a7;
+    -fx-effect: dropshadow(gaussian, rgba(46, 125, 50, 0.7), 10, 0, 0, 0);
+}
+
+.botao-finalizar {
+    -fx-background-color: -cor-primaria;
+    -fx-background-insets: 0;
+    -fx-background-radius: 12;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 20 10 20 10;
+    -fx-cursor: hand;
+}
+
+.botao-finalizar:hover {
+    -fx-background-color: derive(-cor-primaria, 20%);
+}
+
+.botao-finalizar:pressed {
+    -fx-background-color: derive(-cor-primaria, -10%);
+}
+
+/* Carrinho vazio: cinza, para mostrar que ainda não dá para finalizar */
+.botao-finalizar:disabled {
+    -fx-background-color: #b0bec5;
+    -fx-opacity: 1;
+}
+
+/* ---------- Botões de ação (usados em todas as telas) ---------- */
+.botao-acao {
+    -cor-acao: #455a64;
+    -fx-background-color: -cor-acao;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 9 16 9 16;
+    -fx-cursor: hand;
+}
+
+.botao-acao:hover {
+    -fx-background-color: derive(-cor-acao, 18%);
+}
+
+.botao-acao:pressed {
+    -fx-background-color: derive(-cor-acao, -12%);
+}
+
+.acao-primaria { -cor-acao: -cor-primaria-clara; }
+.acao-perigo   { -cor-acao: -cor-perigo; }
+.acao-neutra   { -cor-acao: -cor-neutra; }
+
+/* ---------- Campos de texto ---------- */
+.text-field {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-color: #cfd8dc;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-padding: 8 10 8 10;
+}
+
+.text-field:focused {
+    -fx-border-color: -cor-primaria-clara;
+    -fx-border-width: 2;
+}
+
+.campo-troco {
+    -fx-background-color: #e3f2fd;
+    -fx-text-fill: #0d47a1;
+}
+
+/* Campo de texto dentro de ComboBox e DatePicker: sem borda dupla */
+.combo-box-base .text-field,
+.date-picker .text-field {
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+    -fx-padding: 4 6 4 6;
+}
+
+/* ---------- Tabelas ---------- */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-color: #dfe5e2;
+    -fx-border-radius: 8;
+    -fx-font-size: 14px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -cor-primaria;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-size: 40;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-row-cell {
+    -fx-cell-size: 38;
+}
+
+.table-row-cell:filled:hover {
+    -fx-background-color: #f1f8e9;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #c8e6c9;
+}
+
+.table-row-cell:filled:selected .table-cell {
+    -fx-text-fill: #1b5e20;
+}

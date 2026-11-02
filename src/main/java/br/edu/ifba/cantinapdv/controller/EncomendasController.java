@@ -74,6 +74,8 @@ public class EncomendasController {
 
     @FXML
     public void initialize() {
+
+        tabelaEncomendas.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         // Liga cada coluna a um dado da Encomenda (usa os getters)
         colCliente.setCellValueFactory(new PropertyValueFactory<>("nomeCliente"));
         colProduto.setCellValueFactory(new PropertyValueFactory<>("nomeProduto"));
