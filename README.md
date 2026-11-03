@@ -184,4 +184,4 @@ mvnw.cmd javafx:run      # Windows
 
 Projeto desenvolvido como TCC no **Instituto Federal da Bahia (IFBA) – Campus Irecê**.
 
-**Autor:** SEU NOME AQUI
+**Autor:** Adrian Luis Alves Rocha
