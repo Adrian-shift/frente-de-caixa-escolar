@@ -4,7 +4,7 @@
 
 Projeto desenvolvido como Trabalho de Conclusão de Curso (TCC) para substituir o caderno de anotações no balcão da cantina, agilizando o atendimento e entregando o fechamento do dia já somado por forma de pagamento.
 
-<img width="1080" height="733" alt="image" src="https://github.com/user-attachments/assets/a89a6ddb-3448-4cb3-947a-f937545c6920" />
+<img width="1245" height="714" alt="image" src="https://github.com/user-attachments/assets/d92fd144-e5a6-4a7e-b108-e6946f984c48" />
 
 ---
 
