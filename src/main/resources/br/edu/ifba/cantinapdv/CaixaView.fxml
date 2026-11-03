@@ -1,181 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.MainController" stylesheets="@estilo.css" styleClass="tela">
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.CaixaController" stylesheets="@estilo.css" styleClass="tela">
+    <children>
 
-    <!-- Grupo que garante que só um botão do menu fique marcado -->
-    <fx:define>
-        <ToggleGroup fx:id="grupoMenu" />
-    </fx:define>
-
-    <!-- ============================================== -->
-    <!-- MENU LATERAL (sempre visível)                  -->
-    <!-- ============================================== -->
-    <left>
-        <VBox prefWidth="250.0" styleClass="menu-lateral" BorderPane.alignment="CENTER">
+        <!-- PAINEL DE PRODUTOS (os botões são criados pelo Java, lendo do banco) -->
+        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
             <children>
-
-                <!-- Quadro branco com a logo (a logo é verde, então precisa de fundo claro) -->
-                <StackPane maxHeight="100.0" maxWidth="100.0" prefHeight="100.0" prefWidth="100.0" styleClass="logo-quadro">
-                    <children>
-                        <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/logo.png" />
-                            </image>
-                        </ImageView>
-                    </children>
-                    <VBox.margin>
-                        <Insets bottom="8.0" left="75.0" top="18.0" />
-                    </VBox.margin>
-                </StackPane>
-
-                <Label text="PDV CANTINA" textFill="WHITE">
+                <Label text="Terminal de Vendas">
                     <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font name="System Bold" size="22.0" />
                     </font>
                     <VBox.margin>
-                        <Insets bottom="2.0" left="20.0" top="4.0" />
+                        <Insets bottom="20.0" />
                     </VBox.margin>
                 </Label>
-                <Label text="IFBA Campus Irecê" textFill="#a5d6a7">
+
+                <FlowPane fx:id="painelProdutos" hgap="15.0" vgap="15.0" />
+            </children>
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+        </VBox>
+
+        <!-- PAINEL DO CARRINHO E PAGAMENTO -->
+        <VBox prefHeight="200.0" prefWidth="400.0" styleClass="painel-pedido">
+            <children>
+                <Label text="Pedido Atual">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
                     <VBox.margin>
-                        <Insets bottom="14.0" left="20.0" />
+                        <Insets bottom="10.0" />
                     </VBox.margin>
                 </Label>
 
-                <ToggleButton fx:id="btnVenda" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Venda Rápida" toggleGroup="$grupoMenu">
+                <!-- Lista onde os itens comprados aparecem -->
+                <ListView fx:id="listaCarrinho" prefHeight="200.0" prefWidth="200.0" styleClass="lista-carrinho" VBox.vgrow="ALWAYS">
+                    <VBox.margin>
+                        <Insets bottom="15.0" />
+                    </VBox.margin>
+                </ListView>
+
+                <HBox spacing="10.0">
+                    <children>
+                        <Button fx:id="btnRemoverItem" graphicTextGap="8.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-acao, acao-neutra" text="Remover item" HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icones/remover.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="btnLimparPedido" graphicTextGap="8.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-acao, acao-perigo" text="Limpar pedido" HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icones/limpar.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="15.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <!-- TOTAL em destaque -->
+                <HBox alignment="CENTER_LEFT" styleClass="caixa-total">
+                    <children>
+                        <Label text="TOTAL: ">
+                            <font>
+                                <Font name="System Bold" size="20.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="labelTotal" text="R$ 0,00" textFill="#c0392b">
+                            <font>
+                                <Font name="System Bold" size="30.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="15.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <!-- Formas de pagamento (a cor de cada botão vem do CSS; o escolhido fica verde) -->
+                <HBox spacing="10.0">
+                    <children>
+                        <Button fx:id="btnDinheiro" graphicTextGap="8.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-pagamento" text="Dinheiro (F1)" HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <ImageView fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icones/dinheiro.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="btnCartao" graphicTextGap="8.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-pagamento" text="Cartão (F2)" HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <ImageView fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icones/cartao.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Button fx:id="btnPix" graphicTextGap="8.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-pagamento" text="PIX (F3)" HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <ImageView fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
+                                    <image>
+                                        <Image url="@icones/pix.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <!-- Valor Recebido e Troco -->
+                <HBox spacing="15.0">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Valor Recebido (R$)" textFill="#555555">
+                                    <font><Font name="System Bold" size="12.0" /></font>
+                                </Label>
+                                <TextField fx:id="campoValorRecebido" promptText="0,00">
+                                    <font><Font size="20.0" /></font>
+                                </TextField>
+                            </children>
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Troco (R$)" textFill="#555555">
+                                    <font><Font name="System Bold" size="12.0" /></font>
+                                </Label>
+                                <TextField fx:id="campoTroco" editable="false" promptText="0,00" styleClass="campo-troco">
+                                    <font><Font name="System Bold" size="20.0" /></font>
+                                </TextField>
+                            </children>
+                        </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="6.0" />
+                    </VBox.margin>
+                </HBox>
+
+                <!-- Aviso em vermelho (ex.: "Faltam R$ 3,00") -->
+                <Label fx:id="labelAviso" minHeight="22.0" styleClass="aviso-erro" text="" wrapText="true">
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Label>
+
+                <Button fx:id="btnFinalizar" graphicTextGap="12.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-finalizar" text="FINALIZAR VENDA (ENTER)">
                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                        <ImageView fitHeight="28.0" fitWidth="28.0" preserveRatio="true">
                             <image>
-                                <Image url="@icones/vendas.png" />
+                                <Image url="@icones/finalizar.png" />
                             </image>
                         </ImageView>
                     </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
-                </ToggleButton>
-
-                <ToggleButton fx:id="btnEncomendas" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Encomendas (Marmita)" toggleGroup="$grupoMenu">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/encomendas.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
-                </ToggleButton>
-
-                <ToggleButton fx:id="btnVendasDia" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Vendas do Dia" toggleGroup="$grupoMenu">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/historico.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
-                </ToggleButton>
-
-                <ToggleButton fx:id="btnFechamento" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Fechamento do Caixa" toggleGroup="$grupoMenu">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/fechamento.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
-                </ToggleButton>
-
-                <ToggleButton fx:id="btnRelatorios" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Relatórios" toggleGroup="$grupoMenu">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/relatorios.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
-                </ToggleButton>
-
-                <ToggleButton fx:id="btnProdutos" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Gerenciar Produtos" toggleGroup="$grupoMenu">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/produtos.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
-                </ToggleButton>
-
-                <ToggleButton fx:id="btnConfiguracoes" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Configurações" toggleGroup="$grupoMenu">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/configuracoes.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
-                </ToggleButton>
-
-                <!-- Espaço que empurra os últimos botões para o fim do menu -->
-                <Region VBox.vgrow="ALWAYS" />
-
-                <ToggleButton fx:id="btnSobre" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Sobre" toggleGroup="$grupoMenu">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/sobre.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
-                </ToggleButton>
-
-                <Button fx:id="btnBackup" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu, botao-backup" text="Backup agora">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
-                            <image>
-                                <Image url="@icones/backup.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <padding>
-                        <Insets bottom="11.0" left="20.0" top="11.0" />
-                    </padding>
                 </Button>
             </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
         </VBox>
-    </left>
-
-    <!-- ============================================== -->
-    <!-- ÁREA CENTRAL (a tela da vez aparece aqui)      -->
-    <!-- ============================================== -->
-    <center>
-        <StackPane fx:id="areaConteudo" BorderPane.alignment="CENTER" />
-    </center>
-</BorderPane>
+    </children>
+</HBox>

@@ -22,16 +22,16 @@
             <children>
 
                 <!-- Quadro branco com a logo (a logo é verde, então precisa de fundo claro) -->
-                <StackPane maxHeight="130.0" maxWidth="130.0" prefHeight="130.0" prefWidth="130.0" styleClass="logo-quadro">
+                <StackPane maxHeight="100.0" maxWidth="100.0" prefHeight="100.0" prefWidth="100.0" styleClass="logo-quadro">
                     <children>
-                        <ImageView fitHeight="110.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@icones/logo.png" />
                             </image>
                         </ImageView>
                     </children>
                     <VBox.margin>
-                        <Insets bottom="10.0" left="60.0" top="25.0" />
+                        <Insets bottom="8.0" left="75.0" top="18.0" />
                     </VBox.margin>
                 </StackPane>
 
@@ -40,12 +40,12 @@
                         <Font name="System Bold" size="24.0" />
                     </font>
                     <VBox.margin>
-                        <Insets bottom="5.0" left="20.0" top="5.0" />
+                        <Insets bottom="2.0" left="20.0" top="4.0" />
                     </VBox.margin>
                 </Label>
                 <Label text="IFBA Campus Irecê" textFill="#a5d6a7">
                     <VBox.margin>
-                        <Insets bottom="25.0" left="20.0" />
+                        <Insets bottom="14.0" left="20.0" />
                     </VBox.margin>
                 </Label>
 
@@ -58,7 +58,7 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
                 </ToggleButton>
 
@@ -71,7 +71,7 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
                 </ToggleButton>
 
@@ -84,7 +84,7 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
                 </ToggleButton>
 
@@ -97,7 +97,20 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
+                    </padding>
+                </ToggleButton>
+
+                <ToggleButton fx:id="btnRelatorios" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Relatórios" toggleGroup="$grupoMenu">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/relatorios.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
                 </ToggleButton>
 
@@ -110,7 +123,7 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
                 </ToggleButton>
 
@@ -123,12 +136,25 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
                 </ToggleButton>
 
-                <!-- Espaço que empurra o botão de backup para o fim do menu -->
+                <!-- Espaço que empurra os últimos botões para o fim do menu -->
                 <Region VBox.vgrow="ALWAYS" />
+
+                <ToggleButton fx:id="btnSobre" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Sobre" toggleGroup="$grupoMenu">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/sobre.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
+                    </padding>
+                </ToggleButton>
 
                 <Button fx:id="btnBackup" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu, botao-backup" text="Backup agora">
                     <graphic>
@@ -139,7 +165,7 @@
                         </ImageView>
                     </graphic>
                     <padding>
-                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                        <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
                 </Button>
             </children>

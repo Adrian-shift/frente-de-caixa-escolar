@@ -108,7 +108,7 @@
                                 <TableColumn fx:id="colMetodo" prefWidth="140.0" text="Forma" />
                                 <TableColumn fx:id="colQtdVendas" prefWidth="70.0" text="Vendas" />
                                 <TableColumn fx:id="colTotalMetodo" prefWidth="110.0" text="Total" />
-                                <TableColumn fx:id="colPercentual" prefWidth="70.0" text="%" />
+                                <TableColumn fx:id="colPercentual" prefWidth="70.0" text="&#37;" />
                             </columns>
                         </TableView>
                     </children>
