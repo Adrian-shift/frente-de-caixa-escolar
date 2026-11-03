@@ -273,7 +273,7 @@
 
 /* ---------- Conferência do dinheiro (tela Fechamento) ---------- */
 .painel-conferencia {
-    -fx-background-color: white;
+    -fx-background-color: #dafcd9;
     -fx-background-radius: 10;
     -fx-border-color: #dfe5e2;
     -fx-border-radius: 10;

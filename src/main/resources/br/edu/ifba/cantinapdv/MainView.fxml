@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.MainController" stylesheets="@estilo.css" styleClass="tela">
+<BorderPane styleClass="tela" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.MainController">
 
     <!-- Grupo que garante que só um botão do menu fique marcado -->
     <fx:define>
@@ -35,21 +34,21 @@
                     </VBox.margin>
                 </StackPane>
 
-                <Label text="PDV CANTINA" textFill="WHITE">
+                <Label alignment="CENTER" prefHeight="35.0" prefWidth="283.0" text="CantinaFast" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
                     <VBox.margin>
-                        <Insets bottom="2.0" left="20.0" top="4.0" />
+                        <Insets bottom="2.0" top="4.0" />
                     </VBox.margin>
                 </Label>
-                <Label text="IFBA Campus Irecê" textFill="#a5d6a7">
+                <Label alignment="CENTER" prefHeight="17.0" prefWidth="291.0" text="IFBA Campus Irecê" textFill="#a5d6a7">
                     <VBox.margin>
-                        <Insets bottom="14.0" left="20.0" />
+                        <Insets bottom="14.0" />
                     </VBox.margin>
                 </Label>
 
-                <ToggleButton fx:id="btnVenda" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Venda Rápida" toggleGroup="$grupoMenu">
+                <ToggleButton fx:id="btnVenda" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Venda Rápida">
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
                             <image>
@@ -60,6 +59,9 @@
                     <padding>
                         <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
+               <toggleGroup>
+                  <ToggleGroup fx:id="grupoMenu" />
+               </toggleGroup>
                 </ToggleButton>
 
                 <ToggleButton fx:id="btnEncomendas" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Encomendas (Marmita)" toggleGroup="$grupoMenu">
@@ -127,6 +129,9 @@
                     </padding>
                 </ToggleButton>
 
+                <!-- Espaço que empurra os últimos botões para o fim do menu -->
+                <Region VBox.vgrow="ALWAYS" />
+
                 <ToggleButton fx:id="btnConfiguracoes" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Configurações" toggleGroup="$grupoMenu">
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
@@ -139,9 +144,6 @@
                         <Insets bottom="11.0" left="20.0" top="11.0" />
                     </padding>
                 </ToggleButton>
-
-                <!-- Espaço que empurra os últimos botões para o fim do menu -->
-                <Region VBox.vgrow="ALWAYS" />
 
                 <ToggleButton fx:id="btnSobre" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Sobre" toggleGroup="$grupoMenu">
                     <graphic>
