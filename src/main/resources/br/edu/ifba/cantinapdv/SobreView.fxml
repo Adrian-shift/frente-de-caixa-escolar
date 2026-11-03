@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="14.0" styleClass="tela" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.SobreController">
+    <padding>
+        <Insets bottom="25.0" left="30.0" right="30.0" top="25.0" />
+    </padding>
+    <children>
+
+        <!-- Logo, nome e descrição -->
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <children>
+                <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@icones/logo.png" />
+                    </image>
+                </ImageView>
+                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="CantinaFast" textFill="#1b5e20">
+                            <font>
+                                <Font name="System Bold" size="28.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="labelVersao" prefHeight="17.0" prefWidth="189.0" text="Versão 1.6" textFill="#555555" />
+                        <Label text="Sistema de frente de caixa (PDV) offline para a cantina do IFBA Campus Irecê: vendas rápidas, encomendas de marmita/PF, fechamento do caixa por forma de pagamento e relatórios." wrapText="true" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <Separator />
+
+        <Label text="Desenvolvimento">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label text="Desenvolvido por Adrian Luis Alves Rocha como Trabalho de Conclusão de Curso, IFBA Campus Irecê." wrapText="true" />
+
+        <Label text="Atalhos da tela de vendas">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label text="F1 = Dinheiro   |   F2 = Cartão   |   F3 = PIX   |   Enter = finalizar a venda.   O botão Remover item tira uma unidade da linha selecionada ou, sem seleção, do último item clicado." wrapText="true" />
+
+        <Label text="Tecnologias">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label text="Java 21, JavaFX (telas em FXML e CSS), banco SQLite, Maven, arquitetura MVC." wrapText="true" />
+
+        <Label text="Créditos">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label text="Ícones: https://fonts.google.com/icons. A logo do CantinaFast é de autoria própria. PIX é marca do Banco Central do Brasil." wrapText="true" />
+
+        <Label text="Informações técnicas (úteis para suporte)">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelAmbiente" text="" wrapText="true" />
+        <Label fx:id="labelPastaDados" text="" wrapText="true" />
+    </children>
+</VBox>

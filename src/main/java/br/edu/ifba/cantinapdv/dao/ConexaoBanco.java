@@ -82,6 +82,23 @@ public class ConexaoBanco {
             adicionarColunaSeNaoExistir(conn, "vendas", "motivo_cancelamento", "TEXT");
             adicionarColunaSeNaoExistir(conn, "vendas", "data_cancelamento", "DATETIME");
 
+            // Conferência do dinheiro (troco inicial e dinheiro contado de cada dia)
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS caixa_dia (
+                    data TEXT PRIMARY KEY,
+                    troco_inicial REAL NOT NULL DEFAULT 0,
+                    dinheiro_contado REAL
+                )
+                """);
+
+            // Configurações do sistema (por exemplo, a senha de acesso, guardada de forma protegida)
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS configuracoes (
+                    chave TEXT PRIMARY KEY,
+                    valor TEXT NOT NULL
+                )
+                """);
+
             cadastrarProdutosIniciais(conn);
             System.out.println("Banco de dados pronto!");
         } catch (SQLException e) {

@@ -114,6 +114,19 @@
                     </padding>
                 </ToggleButton>
 
+                <ToggleButton fx:id="btnConfiguracoes" alignment="CENTER_LEFT" graphicTextGap="14.0" maxWidth="Infinity" mnemonicParsing="false" styleClass="botao-menu" text="Configurações" toggleGroup="$grupoMenu">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true">
+                            <image>
+                                <Image url="@icones/configuracoes.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <padding>
+                        <Insets bottom="15.0" left="20.0" top="15.0" />
+                    </padding>
+                </ToggleButton>
+
                 <!-- Espaço que empurra o botão de backup para o fim do menu -->
                 <Region VBox.vgrow="ALWAYS" />
 

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="12.0" styleClass="tela" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.RelatoriosController">
+    <padding>
+        <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+    </padding>
+    <children>
+        <Label text="Relatórios de Vendas">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+
+        <!-- Escolha do período -->
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Label text="De:" />
+                <DatePicker fx:id="dataInicial" prefWidth="150.0" />
+                <Label text="até:" />
+                <DatePicker fx:id="dataFinal" prefWidth="150.0" />
+                <Button fx:id="btnHoje" mnemonicParsing="false" styleClass="botao-acao, acao-neutra" text="Hoje" />
+                <Button fx:id="btn7Dias" mnemonicParsing="false" styleClass="botao-acao, acao-neutra" text="Últimos 7 dias" />
+                <Button fx:id="btnMesAtual" mnemonicParsing="false" styleClass="botao-acao, acao-neutra" text="Este mês" />
+                <Button fx:id="btnMesPassado" mnemonicParsing="false" styleClass="botao-acao, acao-neutra" text="Mês passado" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnExportar" mnemonicParsing="false" styleClass="botao-acao, acao-primaria" text="Exportar CSV" />
+            </children>
+        </HBox>
+
+        <!-- Cartões de resumo -->
+        <HBox spacing="15.0">
+            <children>
+                <VBox spacing="2.0" styleClass="cartao-resumo" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Total vendido" textFill="#555555" />
+                        <Label fx:id="labelTotal" text="R$ 0,00" textFill="#1b5e20">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox spacing="2.0" styleClass="cartao-resumo" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Nº de vendas" textFill="#555555" />
+                        <Label fx:id="labelQtdVendas" text="0">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox spacing="2.0" styleClass="cartao-resumo" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Ticket médio (valor médio por venda)" textFill="#555555" />
+                        <Label fx:id="labelTicketMedio" text="—">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <VBox spacing="2.0" styleClass="cartao-resumo" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Vendas canceladas" textFill="#555555" />
+                        <Label fx:id="labelCanceladas" text="0" textFill="#c0392b">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <Label fx:id="labelMensagem" text="" textFill="#c0392b" wrapText="true" />
+
+        <!-- Gráfico: vendas por dia -->
+        <BarChart fx:id="graficoDias" animated="false" legendVisible="false" prefHeight="220.0" title="Vendas por dia">
+            <xAxis>
+                <CategoryAxis side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Total (R$)" side="LEFT" />
+            </yAxis>
+        </BarChart>
+
+        <!-- Tabelas -->
+        <HBox minHeight="150.0" spacing="15.0" VBox.vgrow="ALWAYS">
+            <children>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Por forma de pagamento">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TableView fx:id="tabelaPagamentos" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colMetodo" prefWidth="140.0" text="Forma" />
+                                <TableColumn fx:id="colQtdVendas" prefWidth="70.0" text="Vendas" />
+                                <TableColumn fx:id="colTotalMetodo" prefWidth="110.0" text="Total" />
+                                <TableColumn fx:id="colPercentual" prefWidth="70.0" text="%" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </VBox>
+                <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Produtos mais vendidos">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TableView fx:id="tabelaProdutos" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colProduto" prefWidth="180.0" text="Produto" />
+                                <TableColumn fx:id="colQtdProduto" prefWidth="80.0" text="Quantidade" />
+                                <TableColumn fx:id="colTotalProduto" prefWidth="110.0" text="Total" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+</VBox>

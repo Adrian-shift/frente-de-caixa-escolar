@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="12.0" styleClass="tela" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifba.cantinapdv.controller.ConfiguracoesController">
+    <padding>
+        <Insets bottom="25.0" left="30.0" right="30.0" top="25.0" />
+    </padding>
+    <children>
+        <Label text="Configurações">
+            <font>
+                <Font name="System Bold" size="22.0" />
+            </font>
+        </Label>
+
+        <Label text="Senha de acesso">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+            <VBox.margin>
+                <Insets top="10.0" />
+            </VBox.margin>
+        </Label>
+        <Label text="Com uma senha definida, as áreas Vendas do Dia, Fechamento do Caixa, Relatórios, Gerenciar Produtos e Configurações só abrem depois de digitar a senha. A tela de vendas, as encomendas e o backup continuam livres para a atendente." textFill="#555555" wrapText="true" />
+
+        <Label fx:id="labelStatus" text="" wrapText="true">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+
+        <!-- Só aparece quando já existe uma senha -->
+        <VBox fx:id="boxSenhaAtual" maxWidth="320.0" spacing="5.0">
+            <children>
+                <Label text="Senha atual" />
+                <PasswordField fx:id="campoSenhaAtual" />
+            </children>
+        </VBox>
+
+        <VBox maxWidth="320.0" spacing="5.0">
+            <children>
+                <Label text="Nova senha (mínimo 4 caracteres)" />
+                <PasswordField fx:id="campoNovaSenha" />
+            </children>
+        </VBox>
+
+        <VBox maxWidth="320.0" spacing="5.0">
+            <children>
+                <Label text="Repita a nova senha" />
+                <PasswordField fx:id="campoRepetirSenha" />
+            </children>
+        </VBox>
+
+        <HBox spacing="10.0">
+            <children>
+                <Button fx:id="btnSalvarSenha" mnemonicParsing="false" styleClass="botao-acao, acao-primaria" text="Definir senha" />
+                <Button fx:id="btnRemoverSenha" mnemonicParsing="false" styleClass="botao-acao, acao-perigo" text="Remover senha" />
+            </children>
+        </HBox>
+
+        <Label fx:id="labelMensagem" text="" wrapText="true" />
+
+        <Region VBox.vgrow="ALWAYS" />
+
+        <Label text="Esqueceu a senha? Peça ao responsável pelo sistema para redefini-la." textFill="#555555" wrapText="true" />
+    </children>
+</VBox>

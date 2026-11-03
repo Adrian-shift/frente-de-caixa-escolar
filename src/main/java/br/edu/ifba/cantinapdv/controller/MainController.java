@@ -2,11 +2,17 @@ package br.edu.ifba.cantinapdv.controller;
 
 import br.edu.ifba.cantinapdv.dao.BackupBanco;
 import br.edu.ifba.cantinapdv.dao.Log;
+import br.edu.ifba.cantinapdv.dao.SenhaAcesso;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.StackPane;
@@ -27,11 +33,17 @@ public class MainController {
     @FXML
     private ToggleButton btnEncomendas;
     @FXML
-    private ToggleButton btnFechamento;
-    @FXML
     private ToggleButton btnVendasDia;
     @FXML
+    private ToggleButton btnFechamento;
+    @FXML
     private ToggleButton btnProdutos;
+    @FXML
+    private ToggleButton btnConfiguracoes;
+    @FXML
+    private ToggleButton btnRelatorios;
+    @FXML
+    private ToggleButton btnSobre;
 
     @FXML
     private Button btnBackup;
@@ -40,6 +52,13 @@ public class MainController {
     // para o carrinho não se perder quando a atendente visita outra área.
     private Parent telaVenda;
     private CaixaController controladorVenda;
+
+    // Área em que o sistema está agora (para voltar a ela se a senha falhar)
+    private ToggleButton areaAtual;
+
+    // Depois de digitar a senha, as áreas protegidas ficam liberadas
+    // até a pessoa sair delas (ao ir para uma área livre, tranca de novo).
+    private boolean desbloqueado = false;
 
     @FXML
     public void initialize() {
@@ -50,18 +69,88 @@ public class MainController {
             }
         });
 
-        // Cada botão abre a sua área
-        btnVenda.setOnAction(e -> mostrarVenda());
-        btnEncomendas.setOnAction(e -> mostrarTela("EncomendasView.fxml"));
-        btnFechamento.setOnAction(e -> mostrarTela("FechamentoView.fxml"));
-        btnVendasDia.setOnAction(e -> mostrarTela("VendasDiaView.fxml"));
-        btnProdutos.setOnAction(e -> mostrarTela("ProdutosView.fxml"));
+        // Áreas livres
+        btnVenda.setOnAction(e -> abrirArea(btnVenda, false, this::mostrarVenda));
+        btnEncomendas.setOnAction(e -> abrirArea(btnEncomendas, false, () -> mostrarTela("EncomendasView.fxml")));
+        btnSobre.setOnAction(e -> abrirArea(btnSobre, false, () -> mostrarTela("SobreView.fxml")));
+
+        // Áreas protegidas (só pedem senha se existir uma senha definida)
+        btnVendasDia.setOnAction(e -> abrirArea(btnVendasDia, true, () -> mostrarTela("VendasDiaView.fxml")));
+        btnFechamento.setOnAction(e -> abrirArea(btnFechamento, true, () -> mostrarTela("FechamentoView.fxml")));
+        btnRelatorios.setOnAction(e -> abrirArea(btnRelatorios, true, () -> mostrarTela("RelatoriosView.fxml")));
+        btnProdutos.setOnAction(e -> abrirArea(btnProdutos, true, () -> mostrarTela("ProdutosView.fxml")));
+        btnConfiguracoes.setOnAction(e -> abrirArea(btnConfiguracoes, true, () -> mostrarTela("ConfiguracoesView.fxml")));
 
         btnBackup.setOnAction(e -> fazerBackupManual());
 
         // Começa na tela de vendas
+        areaAtual = btnVenda;
         btnVenda.setSelected(true);
         mostrarVenda();
+    }
+
+    // Abre a área pedida. Se ela for protegida e a senha não for aceita, volta para a área anterior.
+    private void abrirArea(ToggleButton botao, boolean protegida, Runnable abrir) {
+        if (protegida) {
+            if (!liberarAcesso(botao.getText())) {
+                areaAtual.setSelected(true); // senha errada ou cancelada: fica onde estava
+                return;
+            }
+        } else {
+            desbloqueado = false; // saiu das áreas protegidas: tranca de novo
+        }
+
+        areaAtual = botao;
+        abrir.run();
+    }
+
+    // Devolve true se o acesso está liberado (sem senha definida, já desbloqueado ou senha correta)
+    private boolean liberarAcesso(String nomeDaArea) {
+        if (!SenhaAcesso.existeSenha() || desbloqueado) {
+            return true;
+        }
+
+        String digitada = pedirSenha();
+        if (digitada == null) {
+            return false; // a pessoa cancelou
+        }
+
+        if (SenhaAcesso.verificar(digitada)) {
+            desbloqueado = true;
+            Log.info("Acesso liberado por senha: " + nomeDaArea);
+            return true;
+        }
+
+        Log.info("Senha incorreta ao tentar abrir: " + nomeDaArea);
+        Alert alerta = new Alert(Alert.AlertType.WARNING);
+        alerta.initOwner(areaConteudo.getScene().getWindow());
+        alerta.setTitle("Senha incorreta");
+        alerta.setHeaderText("Senha incorreta.");
+        alerta.setContentText("Não foi possível abrir esta área.");
+        alerta.showAndWait();
+        return false;
+    }
+
+    // Janela pequena pedindo a senha (os caracteres aparecem como bolinhas). Devolve null se cancelar.
+    private String pedirSenha() {
+        Dialog<String> dialogo = new Dialog<>();
+        dialogo.initOwner(areaConteudo.getScene().getWindow());
+        dialogo.setTitle("Área protegida");
+        dialogo.setHeaderText("Digite a senha para acessar esta área.");
+
+        ButtonType entrar = new ButtonType("Entrar", ButtonBar.ButtonData.OK_DONE);
+        dialogo.getDialogPane().getButtonTypes().addAll(entrar, ButtonType.CANCEL);
+
+        PasswordField campo = new PasswordField();
+        campo.setPromptText("Senha");
+        dialogo.getDialogPane().setContent(campo);
+
+        // O cursor já começa no campo, e o Enter aciona o botão "Entrar"
+        Platform.runLater(campo::requestFocus);
+
+        dialogo.setResultConverter(botao -> botao == entrar ? campo.getText() : null);
+
+        return dialogo.showAndWait().orElse(null);
     }
 
     // Mostra a tela de vendas (carrega só na primeira vez; depois reaproveita)
