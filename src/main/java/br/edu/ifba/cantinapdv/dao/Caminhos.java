@@ -7,8 +7,11 @@ import java.nio.file.Paths;
 
 public class Caminhos {
 
-    // Pasta onde ficam o banco e os backups: C:\Users\<usuario>\CantinaFast
-    public static final Path PASTA_DADOS = Paths.get(System.getProperty("user.home"), "CantinaFast");
+    // Os testes automatizados usam a propriedade "cantina.pasta" para trabalhar em outra pasta,
+    // assim nunca encostam nos dados reais.
+    public static final Path PASTA_DADOS = System.getProperty("cantina.pasta") != null
+            ? Paths.get(System.getProperty("cantina.pasta"))
+            : Paths.get(System.getProperty("user.home"), "CantinaFast");
 
     // Roda uma vez, quando a classe é usada pela primeira vez: cria a pasta se ela não existir
     static {
