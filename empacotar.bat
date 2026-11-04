@@ -6,7 +6,7 @@ set JDK=C:\Program Files\Java\jdk-21
 
 REM === Janela preta com as mensagens do programa (util para TESTES) ===
 REM Para a versao FINAL, deixe a linha abaixo assim: set CONSOLE=
-set CONSOLE=--win-console
+set CONSOLE=
 
 if not exist "target\libs\cantinapdv-1.0-SNAPSHOT.jar" (
     echo ERRO: rode antes o Maven "clean" e "package" no IntelliJ.
