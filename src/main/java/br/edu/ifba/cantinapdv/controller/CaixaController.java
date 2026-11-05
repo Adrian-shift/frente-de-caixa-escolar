@@ -155,7 +155,7 @@ public class CaixaController {
 
             // Botão principal
             Button botao = new Button();
-            botao.setPrefSize(160, 100);
+            botao.setPrefSize(200, 140);
 
             // Nome do produto
             Label nome = new Label(produto.getNome());
@@ -211,14 +211,6 @@ public class CaixaController {
             default:
                 return "cat-outro";
         }
-    }
-
-    // Fichas já têm o valor no nome; os outros mostram o preço embaixo
-    private String textoDoBotao(Produto produto) {
-        /*if (produto.getCategoria().equals("Ficha")) {
-            return produto.getNome();
-        }*/
-        return produto.getNome() + "\nR$ " + String.format("%.2f", produto.getPreco());
     }
 
     private void adicionarItemAoCarrinho(Produto produto) {

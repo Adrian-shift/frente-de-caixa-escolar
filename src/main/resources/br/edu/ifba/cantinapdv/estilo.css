@@ -70,7 +70,7 @@
 /* Nome do produto */
 .produto-nome {
     -fx-text-fill: white;
-    -fx-font-size: 20px;
+    -fx-font-size: 27px;
     -fx-font-weight: bold;
     -fx-alignment: center;
 }
@@ -81,7 +81,7 @@
     -fx-background-radius: 13;
 
     -fx-text-fill: white;
-    -fx-font-size: 20px;
+    -fx-font-size: 27px;
     -fx-font-weight: bold;
 
     -fx-padding: 3 10 3 10;
