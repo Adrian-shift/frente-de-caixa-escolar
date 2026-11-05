@@ -138,9 +138,7 @@ public class ConexaoBanco {
                     {"Ficha R$ 3,00", "Ficha", 3.00},
                     {"Ficha R$ 5,00", "Ficha", 5.00},
                     {"Ficha R$ 7,00", "Ficha", 7.00},
-                    {"Ficha R$ 10,00", "Ficha", 10.00},
-                    {"Café / Chá", "Bebida", 2.00},
-                    {"Suco Copo", "Bebida", 3.00}
+                    {"Ficha R$ 10,00", "Ficha", 10.00}
             };
             for (Object[] p : iniciais) {
                 pstmt.setString(1, (String) p[0]);

@@ -48,16 +48,44 @@
 }
 
 /* ---------- Tela de vendas: produtos ---------- */
+/* Botão principal do produto */
 .botao-produto {
     -cor-cat: #546e7a;
+
     -fx-background-color: -cor-cat;
+    -fx-background-radius: 15;
     -fx-background-insets: 0;
-    -fx-background-radius: 12;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
+
+    -fx-padding: 10 15 10 15;
+
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 6, 0, 0, 2);
+
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(0, 0, 0, 0.18),
+            6, 0, 0, 2
+    );
+}
+
+/* Nome do produto */
+.produto-nome {
+    -fx-text-fill: white;
+    -fx-font-size: 27px;
+    -fx-font-weight: normal;
+    -fx-alignment: center;
+}
+
+/* Preço com fundo mais claro */
+.produto-preco {
+    -fx-background-color: derive(-cor-cat, 22%);
+    -fx-background-radius: 13;
+
+    -fx-text-fill: white;
+    -fx-font-size: 27px;
+
+    -fx-padding: 3 10 3 10;
+
+    -fx-alignment: center;
 }
 
 .botao-produto:hover {

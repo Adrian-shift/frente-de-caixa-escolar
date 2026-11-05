@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javafx.geometry.Pos;
+import javafx.scene.layout.VBox;
+
 public class CaixaController {
 
     // Estado "ativo" dos botões de pagamento (o estilo dele está no estilo.css)
@@ -149,14 +152,45 @@ public class CaixaController {
         painelProdutos.getChildren().clear();
 
         for (Produto produto : ProdutoDAO.listarAtivos()) {
-            Button botao = new Button(textoDoBotao(produto));
+
+            // Botão principal
+            Button botao = new Button();
             botao.setPrefSize(160, 100);
-            botao.setWrapText(true);
-            botao.setTextAlignment(TextAlignment.CENTER);
 
-            // O visual (tamanho da letra, cor) vem do CSS, pela classe do botão e da categoria
-            botao.getStyleClass().addAll("botao-produto", classeDaCategoria(produto));
+            // Nome do produto
+            Label nome = new Label(produto.getNome());
+            nome.getStyleClass().add("produto-nome");
+            nome.setWrapText(true);
+            nome.setMaxWidth(Double.MAX_VALUE);
+            nome.setAlignment(Pos.CENTER);
 
+            // Preço do produto
+            Label preco = new Label(
+                    String.format("R$ %.2f", produto.getPreco())
+            );
+
+            preco.getStyleClass().add("produto-preco");
+            preco.setMaxWidth(Double.MAX_VALUE);
+            preco.setAlignment(Pos.CENTER);
+
+            // Organiza nome e preço verticalmente
+            VBox conteudo = new VBox(6);
+            conteudo.setAlignment(Pos.CENTER);
+            conteudo.getChildren().addAll(nome, preco);
+
+            // Coloca o conteúdo dentro do botão
+            botao.setGraphic(conteudo);
+            botao.setContentDisplay(
+                    javafx.scene.control.ContentDisplay.GRAPHIC_ONLY
+            );
+
+            // Mantém as cores das categorias
+            botao.getStyleClass().addAll(
+                    "botao-produto",
+                    classeDaCategoria(produto)
+            );
+
+            // Mantém a funcionalidade do carrinho
             botao.setOnAction(e -> adicionarItemAoCarrinho(produto));
 
             painelProdutos.getChildren().add(botao);
@@ -181,9 +215,9 @@ public class CaixaController {
 
     // Fichas já têm o valor no nome; os outros mostram o preço embaixo
     private String textoDoBotao(Produto produto) {
-        if (produto.getCategoria().equals("Ficha")) {
+        /*if (produto.getCategoria().equals("Ficha")) {
             return produto.getNome();
-        }
+        }*/
         return produto.getNome() + "\nR$ " + String.format("%.2f", produto.getPreco());
     }
 
