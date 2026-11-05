@@ -70,21 +70,21 @@
 /* Nome do produto */
 .produto-nome {
     -fx-text-fill: white;
-    -fx-font-size: 27px;
-    -fx-font-weight: normal;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
     -fx-alignment: center;
 }
 
-/* Preço com fundo mais claro */
+/* Preço do produto */
 .produto-preco {
     -fx-background-color: derive(-cor-cat, 22%);
     -fx-background-radius: 13;
 
     -fx-text-fill: white;
-    -fx-font-size: 27px;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
 
     -fx-padding: 3 10 3 10;
-
     -fx-alignment: center;
 }
 
